@@ -20,7 +20,7 @@ User.init(
             type: DataTypes.STRING, allowNull: false, require: true,
         },
         role: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING, allowNull: false, require: true,
         },
     },
     {

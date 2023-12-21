@@ -10,6 +10,10 @@ router.post("/create", (req, res) => {
     Controllers.testController.createTest(req.body, res)
 });
 
+router.post("/createbulk", (req, res) => {
+    Controllers.testController.createTestBulk(req.body, res)
+});
+
 router.put("/:id", (req, res) => {
     Controllers.testController.updateTest(req, res);
 });

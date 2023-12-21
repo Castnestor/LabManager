@@ -1,8 +1,8 @@
 "use strict"
 const Models = require("../models");
 
-const getTests = (res) => {
-    Models.Test.findAll({})
+const getRequested_tests = (res) => {
+    Models.Requested_test.findAll({})
     .then(function (data) {
         res.send({  result: 200, data: data });
     })
@@ -12,8 +12,8 @@ const getTests = (res) => {
     });
 };
 
-const createTest = (data, res) => {
-    Models.Test.create(data)
+const createRequested_test = (data, res) => {
+    Models.Requested_test.create(data)
     .then(function (data) {
         res.send({  result: 200, data: data });
     })
@@ -23,20 +23,9 @@ const createTest = (data, res) => {
     });
 };
 
-const createTestBulk = (data, res) => {
-    Models.Test.bulkCreate(data)
-    .then(function (data) {
-        res.send({ result: 200, data: data });
-    })
-    .catch((err) => {
-        console.log(err);
-        res.send({ result: 500, error: err.message });
-    });
-};
-
-const updateTest = (req, res) => {
+const updateRequested_test = (req, res) => {
     console.log(req.params);
-    Models.Test.update(req.body, { where: { id: req.params.id }})
+    Models.Requested_test.update(req.body, { where: { id: req.params.id }})
     .then(function (data) {
         res.send({ result: 200, data: data});
     })
@@ -46,9 +35,9 @@ const updateTest = (req, res) => {
     });
 };
 
-const deleteTest = (req, res) => {
+const deleteRequested_test = (req, res) => {
     console.log(req.pramans);
-    Models.Test.destroy({ where: { id: req.params.id }})
+    Models.Requested_test.destroy({ where: { id: req.params.id }})
     .then(function (data) {
         res.send({ result: 200, data: data });
     })
@@ -59,9 +48,8 @@ const deleteTest = (req, res) => {
 };
 
 module.exports = {
-    getTests,
-    createTest,
-    createTestBulk,
-    updateTest,
-    deleteTest,
+    getRequested_tests,
+    createRequested_test,
+    updateRequested_test,
+    deleteRequested_test,
 }
