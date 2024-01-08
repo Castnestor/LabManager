@@ -47,8 +47,10 @@ const registerUser = async (req, res) => {
     try{
         const { userName, email, password, role } = req.body;
 
+        const userRole = "default";
+
         //Checking if the user is giving all required information.
-        if(!(userName && email && password && role)) {
+        if(!(userName && email && password)) {
             res.status(400).json({ result: "You need to provide userName, email, password and role" });
             return; //stoping the function and sending the error to client
         }
@@ -78,7 +80,7 @@ const registerUser = async (req, res) => {
             userName,
             email: email.toLowerCase(),
             password: hashPassword,
-            role: role
+            role: userRole
         });
 
         const user = userMetaData.get({ plain: true })
@@ -99,9 +101,11 @@ const registerUser = async (req, res) => {
     try {
         //Get user input from request
         const { userName, password } = req.body;
+        console.log(req.body);
     
-        if (!(userName && password)) {
+        if (!(userName || password)) {
             res.status(400).json({ result: "User and password required" });
+            return;
         }
     
         //Check for userName existence in database
@@ -110,14 +114,18 @@ const registerUser = async (req, res) => {
         //check if password matches with user
         if(user && (await bcrypt.compare(password, user.password))) {
             //create a token for this account
-            const token = createToken(user.id, email, user.role);
+            const token = createToken(user.id, user.role);
             //save their token
             user.token = token;
 
             console.log(user);
 
             //send back logged in user details and token
-            res.status(200).send({ result: "User successfully logged in", data: user });
+            return res.status(200).send({ result: "User successfully logged in", data: user });
+        }
+        else {
+            console.log("invalid credentials");
+            res.status(400).json({ result: "Invalid user credentials" });
         }
     } 
     catch (err) {

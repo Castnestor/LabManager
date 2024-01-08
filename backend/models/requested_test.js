@@ -20,6 +20,9 @@ Requested_test.init(
             type: DataTypes.INTEGER, allowNull: false, require: true,
             references: {model: Test, key: 'id'},
         },
+        result: {
+            type: DataTypes.STRING, allowNull: false,
+        },
     },
     {
         sequelize: sequelizeInstance, modelName: "requested_tests",

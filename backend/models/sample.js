@@ -25,7 +25,7 @@ Sample.init(
         invoice_number: {
             type: DataTypes.INTEGER, references: {model: Invoice, key: 'id'}
         },
-        client: {
+        client_id: {
             type: DataTypes.INTEGER, allowNull: false, require: true,
             references: {model: Client, key: 'id'}
         },

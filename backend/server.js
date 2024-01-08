@@ -10,10 +10,10 @@ let dbConnect = require("./dbConnect");
 app.use(express.json());
 
 app.get("/", (req, res) => {
-    res.json({ message: "Welcome to LabManager API" });
-})
+  res.json({ message: "Welcome to LabManager API" });
+});
 
-let userRoutes = require("./routes/userRoute")
+let userRoutes = require("./routes/userRoute");
 app.use("/api/users", userRoutes);
 
 let sampleRoutes = require("./routes/sampleRoute");
@@ -29,7 +29,7 @@ let requested_testRoutes = require("./routes/requested_testRoute");
 app.use("/api/requested_tests", requested_testRoutes);
 
 let test_reportRoutes = require("./routes/test_reportRoute");
-app.use("/api/test_reports", test_reportRoutes)
+app.use("/api/test_reports", test_reportRoutes);
 
 let invoiceRoutes = require("./routes/invoiceRoute");
 app.use("/api/invoices", invoiceRoutes);
@@ -37,5 +37,5 @@ app.use("/api/invoices", invoiceRoutes);
 const PORT = process.env.PORT || 4545;
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
-})
+  console.log(`Server is running on port ${PORT}.`);
+});

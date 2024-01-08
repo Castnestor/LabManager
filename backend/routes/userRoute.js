@@ -3,11 +3,11 @@ const router = express.Router();
 const Controllers = require("../controllers");
 const { verifyToken, requireAdmin } = require("../middleware/authentication");
 
-router.get("/", verifyToken, requireAdmin, (req, res) => {
+router.get("/", (req, res) => {
     Controllers.userController.getUsers(res);
 });
 
-router.post("/create",  (req, res) => {
+router.post("/create", verifyToken, requireAdmin, (req, res) => {
     Controllers.userController.createUser(req.body, res)
 });
 

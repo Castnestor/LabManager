@@ -11,10 +11,10 @@ User.init(
             type: DataTypes.INTEGER, allowNull: false, autoIncrement: true, primaryKey: true,
         },
         userName: {
-            type: DataTypes.STRING, allowNull: false, require: true, unique: true,
+            type: DataTypes.STRING, allowNull: false, require: true, //unique: true,
         },
         email: {
-            type: DataTypes.STRING, allowNull: false, require: true, unique: true,
+            type: DataTypes.STRING, allowNull: false, require: true, //unique: true,
         },
         password: {
             type: DataTypes.STRING, allowNull: false, require: true,
