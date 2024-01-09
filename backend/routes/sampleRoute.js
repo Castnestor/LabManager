@@ -7,8 +7,12 @@ router.get("/", (req, res) => {
 });
 
 router.post("/create", (req, res) => {
-    Controllers.sampleController.createSample(req.body, res);
+    Controllers.sampleController.createBulkSample(req.body, res);
 });
+
+router.get("/:id", (req, res) => {
+    Controllers.sampleController.findSamples(req, res)
+})
 
 router.put("/:id", (req, res) => {
     Controllers.sampleController.updateSample(req, res);

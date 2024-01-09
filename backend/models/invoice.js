@@ -10,15 +10,13 @@ Invoice.init(
         id: {
             type: DataTypes.INTEGER, allowNull: false, autoIncrement: true, primaryKey: true,
         },
-        date: {
-            type: DataTypes.DATE, allowNull: false, require: true,
-        },
         invoice_number: {
-            type: DataTypes.INTEGER, allowNull: false, require: true, unique: true,
+            type: DataTypes.INTEGER, unique: true,
         },
         work_order: {
-            type: DataTypes.INTEGER, allowNull: false, require: true, unique: true,
+            type: DataTypes.STRING, allowNull: false, require: true, unique: true,
         },
+        
     },
     {
         sequelize: sequelizeInstance, modelName: "invoices",

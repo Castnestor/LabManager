@@ -45,7 +45,6 @@ function UserList(props) {
   const colors = tokens(theme.palette.mode);
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
-  console.log(rows);
 
   useEffect(() => {
     axios("/api/users")
@@ -64,22 +63,24 @@ function UserList(props) {
   };
 
   const handleSaveClick = (id) => async () => {
-    try {
+    // try {
       const updatedRow = rows.find((row) => row.id === id);
       // const updatedData = await rows[id].role;
-      const updatedData = await rows[id];
-      console.log(updatedData);
-
+      // console.log(rowModesModel);
+      // console.log(updatedRow);
+      
       //Still does not work
-      const response = await axios.put(`/api/users/${id}`, updatedData)
-      console.log(response.data);
-
+      // console.log(response.data);
+      
       setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    }
-    catch (error) {
-    // Handle errors
-    console.error('Error updating data:', error);
-  }
+      
+      // const updatedData = {role: await rows[id -1].role}
+      // const response = await axios.put(`/api/users/${id}`, updatedData)
+    // }
+  //   catch (error) {
+  //   // Handle errors
+  //   console.error('Error updating data:', error);
+  // }
 
   };
 
@@ -106,6 +107,10 @@ function UserList(props) {
 
   const processRowUpdate = (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
+    const updatedData = {role: newRow.role}
+    // console.log(updatedRow.role);
+    // console.log(newRow.id)
+    axios.put(`/api/users/${newRow.id}`, updatedData)
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
   };
@@ -233,6 +238,7 @@ function UserList(props) {
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
+        onProcessRowUpdateError={(error) => console.log(error)}
         slots={{
           toolbar: EditToolbar,
         }}

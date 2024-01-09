@@ -3,29 +3,35 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useAxios } from "../hooks/useAxios";
 import { useState } from 'react';
+import { useTestsContext } from '../context/TestContext';
 
-function fetchTests(props) {
+// function fetchTests(props) {
 
-//url from API to snet to my custom hook
-const url = "/api/tests/";
-//storing result of custom hook (useAxios)
-const tests = useAxios(url, []);
-
-// returning array of objects to populate the client selector
-return tests;
-}
+  
+//   // returning array of objects to populate the client selector
+//   return tests;
+// }
 
 export default function TestsList({ onTestAdd }) {
   const [requestedTest, setRequestedTest] = useState({ test_id: ''});
+  // const { tests } = useTestsContext();
+
+  // url from API to snet to my custom hook
+  const url = "/api/tests/";
+  //storing result of custom hook (useAxios)
+  const testsList = useAxios(url, []);
   
+  // console.log(tests);
+
   const handleAddtest = (event, value) => {
     // console.log(value.id); add the test id to send it to the API
-    setRequestedTest({test_id: value.id});
-    onTestAdd(requestedTest);
-    console.log(requestedTest);
+    const testId = {test_id: value.id}
+    setRequestedTest(testId);
+    onTestAdd(testId);
+    console.log(testId);
   }
 
-  const testsList= fetchTests();
+  // const testsList= fetchTests();
   return (
     <Autocomplete
       id="testsList"
@@ -37,7 +43,7 @@ export default function TestsList({ onTestAdd }) {
       renderOption={(props, option) => (
         <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
           {/* information to show in options */}
-          {option.name} ({option.email}) +{option.address}
+          {option.name}
         </Box>
       )}
       renderInput={(params) => (
@@ -46,7 +52,7 @@ export default function TestsList({ onTestAdd }) {
           label="Choose a test"
           inputProps={{
             ...params.inputProps,
-            autoComplete: 'new-password', // disable autocomplete and autofill
+            autoComplete: '', // disable autocomplete and autofill
           }}
         />
       )}

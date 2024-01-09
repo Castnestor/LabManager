@@ -74,7 +74,7 @@ export default function Login() {
               border: "none",
               color: colors.greenAccent[300]
             },
-            "& .": {
+            "& .css-mx8x5h-MuiFormLabel-root-MuiInputLabel-root.Mui-focused": {
               color: colors.greenAccent[300]
             },
             "& .MuiButtonBase-root": {

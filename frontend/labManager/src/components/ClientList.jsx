@@ -15,8 +15,14 @@ return clients;
 }
 
 
-export default function ClientList() {
+export default function ClientList({ onChange }) {
   const clientsList= fetchClients();
+
+  const handleClientChange = (event, selectedOption) => {
+    onChange(selectedOption)
+  }
+
+
   return (
     <Autocomplete
       id="clientsList"
@@ -24,6 +30,7 @@ export default function ClientList() {
       options={clientsList}
       autoHighlight
       getOptionLabel={(option) => option.name}
+      onChange={handleClientChange}
       renderOption={(props, option) => (
         <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
           {/* information to show in options */}
@@ -36,7 +43,6 @@ export default function ClientList() {
           label="Choose a client"
           inputProps={{
             ...params.inputProps,
-            autoComplete: 'new-password', // disable autocomplete and autofill
           }}
         />
       )}

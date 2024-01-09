@@ -12,6 +12,8 @@ import FolderSpecialOutlinedIcon from "@mui/icons-material/FolderSpecialOutlined
 import ScienceOutlinedIcon from "@mui/icons-material/ScienceOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import HandshakeOutlinedIcon from "@mui/icons-material/HandshakeOutlined";
+import { useUserContext } from "../context/UserContext";
+import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -33,6 +35,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 };
 
 const SideBar = (props) => {
+  const {  currentUser } = useUserContext();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -137,6 +140,15 @@ const SideBar = (props) => {
           </Box>
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
+              title="Add Samples"
+              to="/addsamples"
+              icon={<AddBoxOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+          </Box>
+          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+            <Item
               title="Samples"
               to="/samples"
               icon={<WaterDropOutlinedIcon />}
@@ -171,7 +183,7 @@ const SideBar = (props) => {
               setSelected={setSelected}
             />
           </Box>
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+          {currentUser.role === 'admin' || currentUser.role === 'manager' ? <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Clients"
               to="/clients"
@@ -179,7 +191,7 @@ const SideBar = (props) => {
               selected={selected}
               setSelected={setSelected}
             />
-          </Box>
+          </Box> : null }
         </Menu>
       </ProSidebar>
     </Box>

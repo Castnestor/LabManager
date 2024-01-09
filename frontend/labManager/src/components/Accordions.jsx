@@ -10,36 +10,35 @@ import TestsList from "./TestList";
 import { useState } from "react";
 
 export default function Accordions({ onSampleAdd, onTestAdd }) {
-  const [testCount, setTestCount] = useState(1);
+  const [testCount, setTestCount] = useState(0);
   const [sampleInfo, setSampleInfo] = useState({
     sampleNumber: "",
-    description: ""
+    description: "",
   });
 
-  console.log(sampleInfo)
-  onSampleAdd(sampleInfo);
-
   const handleAddTest = () => {
+    // console.log(sampleInfo)
+    onSampleAdd(sampleInfo);
     setTestCount(testCount + 1);
-    console.log(testCount);
+    // console.log(testCount);
   };
 
   const handleDescriptionChange = (e) => {
     setSampleInfo((prevSampleInfo) => ({
       ...prevSampleInfo,
-      description: e.target.value
+      description: e.target.value,
     }));
   };
 
   const handleSampleNumberChange = (e) => {
     setSampleInfo((prevSampleInfo) => ({
       ...prevSampleInfo,
-      sampleNumber: e.target.value
+      sampleNumber: e.target.value,
     }));
   };
 
   const tests = Array.from({ length: testCount }, (_, index) => (
-    <TestsList key={index} onTestAdd={onTestAdd}/>
+    <TestsList key={index} onTestAdd={onTestAdd} />
   ));
 
   return (
@@ -50,28 +49,28 @@ export default function Accordions({ onSampleAdd, onTestAdd }) {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-            <Box
-              component="form"
-              sx={{
-                width: 1250,
-                "& > :not(style)": { m: 1, width: "20ch" },
-              }}
-              noValidate
-              autoComplete="off"
-              >
-              <TextField
-                id="Description"
-                label="Description"
-                variant="standard"
-                onChange={handleDescriptionChange}
-              />
-              <TextField
-                id="sampleNumber"
-                label="Standard"
-                variant="standard"
-                onChange={handleSampleNumberChange}
-              />
-            </Box>
+          <Box
+            component="form"
+            sx={{
+              width: 1250,
+              "& > :not(style)": { m: 1, width: "20ch" },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField
+              id="sampleNumber"
+              label="Sample Number"
+              variant="standard"
+              onChange={handleSampleNumberChange}
+            />
+            <TextField
+              id="Description"
+              label="Description"
+              variant="standard"
+              onChange={handleDescriptionChange}
+            />
+          </Box>
         </AccordionSummary>
         <AccordionDetails>
           <Box

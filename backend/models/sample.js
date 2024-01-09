@@ -13,16 +13,16 @@ Sample.init(
         id: {
             type: DataTypes.INTEGER, allowNull: false, autoIncrement: true, primaryKey: true,
         },
-        date: {
-            type: DataTypes.DATE, allowNull: false, require: true,
+        sampleNumber: {
+            type: DataTypes.INTEGER, allowNull: false, require: true,
         },
         description: {
             type: DataTypes.TEXT, allowNull: false, require: true,
         },
         chain_of_custody: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER, allowNull: false, require: true,
         },
-        invoice_number: {
+        invoice_id: {
             type: DataTypes.INTEGER, references: {model: Invoice, key: 'id'}
         },
         client_id: {

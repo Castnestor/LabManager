@@ -21,8 +21,11 @@ Requested_test.init(
             references: {model: Test, key: 'id'},
         },
         result: {
-            type: DataTypes.STRING, allowNull: false,
+            type: DataTypes.STRING,
         },
+        approved: {
+            type: DataTypes.BOOLEAN, defaultValue: false,
+        }
     },
     {
         sequelize: sequelizeInstance, modelName: "requested_tests",
