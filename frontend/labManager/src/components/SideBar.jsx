@@ -35,11 +35,14 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 };
 
 const SideBar = (props) => {
-  const {  currentUser } = useUserContext();
+  const { currentUser } = useUserContext();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+
+  console.log(currentUser);
+
 
   return (
     <Box
@@ -80,7 +83,7 @@ const SideBar = (props) => {
                 ml="15px"
               >
                 <Typography variant="h2" color={colors.grey[100]}>
-                  ADMINIS
+                  {currentUser.userName}
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
@@ -110,17 +113,21 @@ const SideBar = (props) => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Admin
+                  {currentUser.role}
                 </Typography>
                 <Typography variant="h4" color={colors.greenAccent[500]}>
-                  General Manager
+                  {currentUser.role === 'admin' ? "General Administrator" : null}
+                  {currentUser.role === 'manager' ? "Lab Manager" : null}
+                  {currentUser.role === 'QA' ? "Quality assurence" : null}
+                  {currentUser.role === 'Reception' ? "Lab Reception Area" : null}
+                  {currentUser.role === 'Analyst' ? "Laboratory Analist" : null}
                 </Typography>
               </Box>
             </Box>
           )}
 
           {/* Menu items */}
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+          {currentUser.role ? <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Dashboard"
               to="/"
@@ -128,8 +135,8 @@ const SideBar = (props) => {
               selected={selected}
               setSelected={setSelected}
             />
-          </Box>
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+          </Box> : null }
+          {currentUser.role === 'admin' || currentUser.role === 'manager' || currentUser.role === 'QA' || currentUser.role === 'Reception' ? <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Orders"
               to="/orders"
@@ -137,8 +144,8 @@ const SideBar = (props) => {
               selected={selected}
               setSelected={setSelected}
             />
-          </Box>
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+          </Box> : null}
+          {currentUser.role === 'admin' || currentUser.role === 'manager' || currentUser.role === 'Reception' ? <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Add Samples"
               to="/addsamples"
@@ -146,8 +153,8 @@ const SideBar = (props) => {
               selected={selected}
               setSelected={setSelected}
             />
-          </Box>
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+          </Box> : null}
+          {Object.keys(currentUser).length === 0  || currentUser.role === 'default'? null : <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Samples"
               to="/samples"
@@ -155,17 +162,17 @@ const SideBar = (props) => {
               selected={selected}
               setSelected={setSelected}
             />
-          </Box>
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+          </Box>}
+          {currentUser.role === 'admin' || currentUser.role === 'manager' || currentUser.role === 'QA' ||currentUser.role === 'Reception' ? <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
-              title="Results"
-              to="/results"
+              title="Test List"
+              to="/tests"
               icon={<FolderSpecialOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-          </Box>
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+          </Box> : null}
+          {currentUser.role === 'admin' || currentUser.role === 'manager' || currentUser.role === 'Reception' ? <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Test Report"
               to="/reports"
@@ -173,8 +180,8 @@ const SideBar = (props) => {
               selected={selected}
               setSelected={setSelected}
             />
-          </Box>
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+          </Box> : null}
+          {currentUser.role === 'admin' || currentUser.role === 'manager' ? <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Users"
               to="/users"
@@ -182,8 +189,8 @@ const SideBar = (props) => {
               selected={selected}
               setSelected={setSelected}
             />
-          </Box>
-          {currentUser.role === 'admin' || currentUser.role === 'manager' ? <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+          </Box> : null}
+          {currentUser.role === 'admin' || currentUser.role === 'manager' || currentUser.role === 'Reception' ? <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Clients"
               to="/clients"

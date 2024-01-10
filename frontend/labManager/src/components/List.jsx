@@ -22,19 +22,18 @@ function formatDate(dateString) {
   return date.toLocaleString('en-US', options);
 }
 
-function UserList(props) {
+function List({ data, url1, options, deleteRow }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const currentUser = useUserContext();
   const navigate = useNavigate();
-  const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState(data);
   const [rowModesModel, setRowModesModel] = useState({});
+  console.log(rows)
 
   useEffect(() => {
-    axios("/api/users")
-        .then(data =>setRows(data.data.data))
-}, [])
-
+    setRows(data)
+  }, [data])
 
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -75,7 +74,7 @@ function UserList(props) {
   const processRowUpdate = (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
     const updatedData = {role: newRow.role}
-    axios.put(`/api/users/${newRow.id}`, updatedData)
+    axios.put(`${url1}/${newRow.id}`, updatedData)
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
   };
@@ -102,7 +101,7 @@ function UserList(props) {
       flex: 1,
       editable: true,
       type: "singleSelect",
-      valueOptions: ["admin", "manager", "QA", "Analyst", "Reception", "default"],
+      valueOptions: options,
       renderCell: ({ row: { role } }) => {
         return (
         <Box
@@ -161,12 +160,13 @@ function UserList(props) {
             onClick={handleEditClick(id)}
             color="inherit"
           />,
+          deleteRow ? 
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
             onClick={handleDeleteClick(id)}
             color="inherit"
-          />,
+          /> : null
         ];
       },
     },
@@ -226,4 +226,4 @@ function UserList(props) {
   );
 }
 
-export default UserList;
+export default List;

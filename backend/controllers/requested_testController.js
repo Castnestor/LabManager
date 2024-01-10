@@ -12,6 +12,18 @@ const getRequested_tests = (res) => {
     });
 };
 
+const getTestSample = (req, res) => {
+    Models.Requested_test.findAll({ where: { sample_id: req.params.id }})
+    .then(function (data) {
+        res.send({  result: 200, data: data });
+    })
+    .catch((err) => {
+        console.log(err);
+        res.send({ result: 500, error: err.message });
+    });
+};
+
+
 const createRequested_test = (data, res) => {
     Models.Requested_test.create(data)
     .then(function (data) {
@@ -52,4 +64,5 @@ module.exports = {
     createRequested_test,
     updateRequested_test,
     deleteRequested_test,
+    getTestSample
 }

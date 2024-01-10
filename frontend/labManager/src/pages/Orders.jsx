@@ -3,7 +3,9 @@ import { Box, useTheme } from "@mui/material";
 import { tokens } from "../themes/theme";
 import { DataGrid } from "@mui/x-data-grid";
 import Header from "../components/Header";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useUserContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 function fetchSamples(url) {
   //storing result of custom hook (useAxios)
@@ -30,6 +32,8 @@ function formatDate(dateString) {
 function OrderList(props) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const currentUser = useUserContext();
+  const navigate = useNavigate();
   const [rowId, setRowId] = useState();
   const sampleList = fetchSamples(`/api/samples/${rowId}`);
   const invoiceList = fetchSamples("/api/invoices");
@@ -62,6 +66,12 @@ function OrderList(props) {
       renderCell: (params) => <div>{formatDate(params.row.createdAt)}</div>,
     },
   ];
+
+  useEffect(() => {
+    if (!currentUser.currentUser.userName) {
+      navigate("/login");
+    }
+  }, [currentUser, navigate]);
 
   return (
     <Box m="20px">

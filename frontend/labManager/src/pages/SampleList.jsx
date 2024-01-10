@@ -3,6 +3,9 @@ import { Box, useTheme } from "@mui/material";
 import { tokens } from "../themes/theme";
 import { DataGrid } from "@mui/x-data-grid";
 import Header from "../components/Header";
+import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../context/UserContext";
+import { useEffect } from "react";
 
 function fetchSamples(url) {
   //storing result of custom hook (useAxios)
@@ -23,8 +26,12 @@ function SamplesList(props) {
   const colors = tokens(theme.palette.mode);
   const sampleList = fetchSamples("/api/samples/");
   const clientList = fetchSamples("/api/clients");
+  const navigate = useNavigate();
+  const currentUser = useUserContext();
+  console.log(currentUser.currentUser);
   const sampleInfo = sampleList.map((sample, index) => ({
     id: sample.id,
+    sampleNumber: sample.sampleNumber,
     description: sample.description,
     chain_of_custody: sample.chain_of_custody,
     client: clientList.find((client) => client.id === sample.client_id)?.name || "Unknown Client",
@@ -32,8 +39,25 @@ function SamplesList(props) {
   }));
 
 
-  const columns = [
-    { field: "id", headerName: "ID" },
+  const columns = currentUser.role === "analyst" ? [
+    // { field: "id", headerName: "ID" },
+    { field: "sampleNumber", headerName: "Sample Number", flex: 0.5},
+    {
+      field: "description",
+      headerName: "Name/Descriptions",
+      flex: 1,
+      cellClassName: "name-column--cell",
+    },
+    { field: "chain_of_custody", headerName: "Chain of custody", flex: 1 },
+    { field: "createdAt", 
+    headerName: "Created", 
+    flex: 1,
+    renderCell: (params) => (
+      <div>{formatDate(params.row.createdAt)}</div>
+    )
+  },
+  ] : [
+    { field: "sampleNumber", headerName: "Sample Number", flex: 0.5},
     {
       field: "description",
       headerName: "Name/Descriptions",
@@ -49,7 +73,19 @@ function SamplesList(props) {
       <div>{formatDate(params.row.createdAt)}</div>
     )
   },
-  ];
+  ]
+
+  const handleRowClick = (params) => {
+    const { id, sampleNumber, description } = params.row;
+    navigate(`/samples/info/${id}/${sampleNumber}/${description}`);
+  }
+
+  useEffect(() => {
+      if(!currentUser.currentUser.userName) {
+        navigate("/login");
+    }
+  }, [currentUser, navigate]);
+
 
   return (
     <Box m="20px">
@@ -77,6 +113,7 @@ function SamplesList(props) {
         },
       }}>
         <DataGrid rows={sampleInfo} columns={columns}
+        onRowClick={handleRowClick}
         initialState={{
             ...sampleList.initialState,
             pagination: { paginationModel: { pageSize: 20 } },

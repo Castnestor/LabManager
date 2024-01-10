@@ -9,6 +9,8 @@ import AddSamples from '../pages/AddSamples';
 import DashBoard from '../pages/DashBoard';
 import OrderList from '../pages/Orders';
 import ReportsList from '../pages/Reports';
+import SamplePage from '../pages/SamplePage'
+import TestsPage from '../pages/TestsPage';
 
 function AppRoutes (props) {
     return(
@@ -28,8 +30,11 @@ function AppRoutes (props) {
 
             <Route path='/samples' element={<SamplesList {...props}/>}/>
 
-            {/* Results */}
-            {/* <Route path='/results' elemtns={<Results {...props}/>}/> */}
+            {/* Dynamically generated route */}
+            <Route path='/samples/info/:id/:sampleNumber/:description' element={<SamplePage {...props}/>}/>
+
+            {/* List of test */}
+            <Route path='/tests' element={<TestsPage {...props}/>}/>
 
             {/* Reports */}
             <Route path='/reports' element={<ReportsList {...props}/>}/>

@@ -2,7 +2,10 @@ import { useAxios } from "../hooks/useAxios";
 import { Box, useTheme } from "@mui/material";
 import { tokens } from "../themes/theme";
 import { DataGrid } from "@mui/x-data-grid";
+import { useEffect } from "react";
 import Header from "../components/Header";
+import { useUserContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 function fetchSamples(url) {
   //storing result of custom hook (useAxios)
@@ -21,6 +24,8 @@ function formatDate(dateString) {
 function ClientList(props) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const currentUser = useUserContext();
+  const navigate = useNavigate();
   const ClientList = fetchSamples("/api/clients/");
   console.log(ClientList);
 
@@ -42,6 +47,12 @@ function ClientList(props) {
     )
   },
   ];
+
+  useEffect(() => {
+    if (!currentUser.currentUser.userName) {
+      navigate("/login");
+    }
+  }, [currentUser, navigate]);
 
   return (
     <Box m="20px">

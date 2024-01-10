@@ -10,6 +10,10 @@ router.post("/create", (req, res) => {
     Controllers.requested_testController.createRequested_test(req.body, res)
 });
 
+router.get("/:id", (req, res) => {
+    Controllers.requested_testController.getTestSample(req, res)
+});
+
 router.put("/:id", (req, res) => {
     Controllers.requested_testController.updateRequested_test(req, res);
 });
