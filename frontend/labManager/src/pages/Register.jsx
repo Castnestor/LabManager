@@ -3,7 +3,6 @@ import {
   Avatar,
   Button,
   TextField,
-  Link,
   Grid,
   Box,
   Typography,
@@ -13,11 +12,12 @@ import { useTheme } from "@emotion/react";
 import { tokens } from "../themes/theme";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -27,16 +27,17 @@ export default function Register() {
       .then((response) => {
         let result = response.data.response;
         let user = response.data.data;
-        console.log(user);
+        navigate("/");
+        // console.log(user);
       })
       .catch((err) => {
         console.log(err);
       });
 
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    // console.log({
+    //   email: data.get("email"),
+    //   password: data.get("password"),
+    // });
   };
 
   return (
@@ -133,9 +134,16 @@ export default function Register() {
             }}
           >
             <Grid item>
-              <Link to={"/login"} variant="body2">
-                Already have an account? Sign in
-              </Link>
+              <Typography
+                component="div"
+                variant="body2"
+                sx={{ mt: 2, textAlign: "center" }}
+              >
+                Already have an account? {" "}
+                <Link to="/login" style={{ color: colors.blueAccent[100] }}>
+                  Sign in
+                </Link>
+              </Typography>
             </Grid>
           </Grid>
         </Box>

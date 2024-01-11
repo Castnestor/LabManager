@@ -19,13 +19,21 @@ const TopBar = (props) => {
   const [menuMode, setMenuMode] = useState(null);
   const navigate = useNavigate();
 
+  //sets the menu to open
   const handleMenuOpen = (event) => {
     setMenuMode(event.currentTarget)
   }
 
-  const handleMenuClose = () => {
-    handleUpdateUser({});
+  const handleCloseMenu = () => {
     setMenuMode(null);
+  }
+  
+  const handleLogOut = () => {
+    //set the user to an empty object
+    handleUpdateUser({});
+    // closes the menu
+    setMenuMode(null);
+    //Sends you to the login page
     navigate("/login");
   }
 
@@ -36,6 +44,7 @@ const TopBar = (props) => {
         backgroundColor={colors.primary[400]}
         borderRadius={"3px"}
       >
+        {/* The search bar, It does not have any function yet */}
         <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
         <IconButton>
           <SearchIcon />
@@ -49,21 +58,22 @@ const TopBar = (props) => {
                 <WbIncandescentOutlinedIcon/>
             )}
         </IconButton>
-        <IconButton>
+        {/* Non-functional buttons */}
+        {/* <IconButton>
           <NotificationsActiveOutlinedIcon />
         </IconButton>
         <IconButton>
           <SettingsSuggestOutlinedIcon />
-        </IconButton>
+        </IconButton> */}
         <IconButton onClick={handleMenuOpen}>
           <PersonOutlineOutlinedIcon />
         </IconButton>
         <Menu 
         anchorEl={menuMode}
         open={Boolean(menuMode)}
-        onClose={handleMenuClose}
+        onClose={handleCloseMenu}
         >
-          <MenuItem>Logout</MenuItem>
+          <MenuItem onClick={handleLogOut}>Logout</MenuItem>
         </Menu>
       </Box>
     </Box>

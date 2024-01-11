@@ -14,7 +14,7 @@ const clients = useAxios(url, []);
 return clients;
 }
 
-
+// Function onChange given by Accordion Component
 export default function ClientList({ onChange }) {
   const clientsList= fetchClients();
 
@@ -26,7 +26,7 @@ export default function ClientList({ onChange }) {
   return (
     <Autocomplete
       id="clientsList"
-      sx={{ width: 300 }}
+      sx={{ width: "20%" }}
       options={clientsList}
       autoHighlight
       getOptionLabel={(option) => option.name}

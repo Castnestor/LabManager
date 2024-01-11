@@ -1,7 +1,5 @@
-import Header from "./components/Header";
 import SideBar from "./components/SideBar";
 import TopBar from "./components/TopBar";
-import { TestsProvider } from "./context/TestContext";
 import { UserProvider } from "./context/UserContext";
 import AppRoutes from "./routes/AppRoutes";
 import { ColorModeContext, useMode } from "./themes/theme";
@@ -12,7 +10,6 @@ function App() {
 
   return (
     <UserProvider>
-      <TestsProvider>
         <ColorModeContext.Provider value={colorMode}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -25,7 +22,6 @@ function App() {
             </div>
           </ThemeProvider>
         </ColorModeContext.Provider>
-      </TestsProvider>
     </UserProvider>
   );
 }

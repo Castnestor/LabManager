@@ -1,24 +1,35 @@
 import React, { useEffect, useState } from 'react'
-import List from '../components/List'
-import { useAxios } from '../hooks/useAxios'
 import axios from 'axios'
+import Header from '../components/Header';
+import List from '../components/List';
+import { Box } from '@mui/material';
+
 
 export default function TestsPage() {
   const [tests, setTests] = useState([]);
 
-  useEffect( () => {
+  useEffect(() => {
     const getData = async () => {
-      const data = await axios.get("api/users");
-      // console.log(data.data.data);
-      setTests(data.data.data)
+      try {
+      const response = await axios.get("api/tests");
+        console.log(response.data.data);
+        setTests(response.data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
     }
 
     getData();
   },[])
 
-  return (
-    <div>
-      <List data={tests} url="/api/users" options={[true, false]} deleteRow={false} />
-    </div>
-  )
-}
+  tests.length > 0 && console.log("Length true")
+  
+    return (
+      <div>
+        <Header title="Tests" subtitle="Your current tests"/>
+        {tests.length > 0 && (
+          <List data={tests} url="/api/tests" options={[true, false]} deleteRow={true}/>
+          )}
+      </div>
+    )
+  }

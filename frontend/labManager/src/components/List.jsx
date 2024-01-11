@@ -1,7 +1,7 @@
+import * as React from "react";
 import { Box, useTheme} from "@mui/material";
 import { tokens } from "../themes/theme";
-import { DataGrid, GridRowModes, GridActionsCellItem, } from "@mui/x-data-grid";
-import Header from "../components/Header";
+import { GridRowModes, DataGrid, GridToolbarContainer, GridActionsCellItem, GridRowEditStopReasons, } from "@mui/x-data-grid";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
@@ -11,10 +11,8 @@ import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../context/UserContext";
-import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import EditToolbar from "../components/EditToolBar";
-
 
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -22,18 +20,13 @@ function formatDate(dateString) {
   return date.toLocaleString('en-US', options);
 }
 
-function List({ data, url1, options, deleteRow }) {
+function List({ data, url1, options, deleteRow, }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const currentUser = useUserContext();
   const navigate = useNavigate();
   const [rows, setRows] = useState(data);
   const [rowModesModel, setRowModesModel] = useState({});
-  console.log(rows)
-
-  useEffect(() => {
-    setRows(data)
-  }, [data])
 
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -46,37 +39,34 @@ function List({ data, url1, options, deleteRow }) {
   };
 
   const handleSaveClick = (id) => () => {
-      const updatedRow = rows.find((row) => row.id === id);
-      setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  const handleRowModesModelChange = (newRowModesModel) => {
-    setRowModesModel(newRowModesModel);
-  };
-
+  
   const handleDeleteClick = (id) => () => {
-    console.log(id);
     setRows(rows.filter((row) => row.id !== id));
   };
-
+  
   const handleCancelClick = (id) => () => {
     setRowModesModel({
       ...rowModesModel,
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
     });
-
+    
     const editedRow = rows.find((row) => row.id === id);
     if (editedRow.isNew) {
       setRows(rows.filter((row) => row.id !== id));
     }
   };
-
+  
   const processRowUpdate = (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
-    const updatedData = {role: newRow.role}
-    axios.put(`${url1}/${newRow.id}`, updatedData)
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
+  };
+  
+  const handleRowModesModelChange = (newRowModesModel) => {
+    setRowModesModel(newRowModesModel);
   };
 
   const columns = [
@@ -152,6 +142,15 @@ function List({ data, url1, options, deleteRow }) {
           ];
         }
 
+        if (deleteRow) {
+          return [<GridActionsCellItem
+          icon={<EditIcon />}
+          label="Edit"
+          className="textPrimary"
+          onClick={handleEditClick(id)}
+          color="inherit"
+        />]
+        }
         return [
           <GridActionsCellItem
             icon={<EditIcon />}
@@ -160,13 +159,12 @@ function List({ data, url1, options, deleteRow }) {
             onClick={handleEditClick(id)}
             color="inherit"
           />,
-          deleteRow ? 
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
             onClick={handleDeleteClick(id)}
             color="inherit"
-          /> : null
+          /> 
         ];
       },
     },
@@ -180,7 +178,6 @@ function List({ data, url1, options, deleteRow }) {
 
   return (
     <Box m="20px">
-      <Header title="Users" subtitle="Managing the users" />
       <Box m="40px 0 0 0" height={"75vh"} sx={{
         "& .MuiDataGrid-root": {
           border: "none"

@@ -39,7 +39,7 @@ function SamplesList(props) {
   }));
 
 
-  const columns = currentUser.role === "analyst" ? [
+  const columns = currentUser.currentUser.role === "Analyst" ? [
     // { field: "id", headerName: "ID" },
     { field: "sampleNumber", headerName: "Sample Number", flex: 0.5},
     {

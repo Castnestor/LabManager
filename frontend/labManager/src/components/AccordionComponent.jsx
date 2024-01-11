@@ -9,7 +9,8 @@ import Button from "@mui/material/Button";
 import TestsList from "./TestList";
 import { useState } from "react";
 
-export default function Accordions({ onSampleAdd, onTestAdd }) {
+//onSampleAdd and onTestAdd are coming from the AddSample component in the pages folder
+export default function AccordionComponent({ onSampleAdd, onTestAdd }) {
   const [testCount, setTestCount] = useState(0);
   const [sampleInfo, setSampleInfo] = useState({
     sampleNumber: "",
@@ -17,12 +18,12 @@ export default function Accordions({ onSampleAdd, onTestAdd }) {
   });
 
   const handleAddTest = () => {
-    // console.log(sampleInfo)
+    //Passes the information of sampleInfo to the parent
     onSampleAdd(sampleInfo);
     setTestCount(testCount + 1);
-    // console.log(testCount);
   };
 
+  // Controlled inputs for description and sample number
   const handleDescriptionChange = (e) => {
     setSampleInfo((prevSampleInfo) => ({
       ...prevSampleInfo,
@@ -37,10 +38,12 @@ export default function Accordions({ onSampleAdd, onTestAdd }) {
     }));
   };
 
+  //Controls how many accordions are going to be rendered
   const tests = Array.from({ length: testCount }, (_, index) => (
     <TestsList key={index} onTestAdd={onTestAdd} />
   ));
 
+  // Construction of the accordion using Material UI
   return (
     <div>
       <Accordion>

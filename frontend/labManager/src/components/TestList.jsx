@@ -4,33 +4,26 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { useAxios } from "../hooks/useAxios";
 import { useState } from 'react';
 
-// function fetchTests(props) {
 
-  
-//   // returning array of objects to populate the client selector
-//   return tests;
-// }
+// returning array of objects to populate the client selector
 
 export default function TestsList({ onTestAdd }) {
   const [requestedTest, setRequestedTest] = useState({ test_id: ''});
-  // const { tests } = useTestsContext();
 
-  // url from API to snet to my custom hook
+  // url from API to set to my custom hook
   const url = "/api/tests/";
   //storing result of custom hook (useAxios)
   const testsList = useAxios(url, []);
   
-  // console.log(tests);
-
   const handleAddtest = (event, value) => {
-    // console.log(value.id); add the test id to send it to the API
+    // add the test id to the parent component
     const testId = {test_id: value.id}
+    //save the information in state
     setRequestedTest(testId);
+    //Runs the the function for it's parent
     onTestAdd(testId);
-    console.log(testId);
   }
 
-  // const testsList= fetchTests();
   return (
     <Autocomplete
       id="testsList"

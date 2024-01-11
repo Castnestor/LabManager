@@ -13,7 +13,6 @@ import { useEffect, useState } from "react";
 import { useUserContext } from "../context/UserContext";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import EditToolbar from "../components/EditToolBar";
 
 
 function formatDate(dateString) {
@@ -57,6 +56,13 @@ function UserList(props) {
 
   const handleDeleteClick = (id) => () => {
     console.log(id);
+    axios.delete(`/api/users/${id.id}`)
+    .then(response => {
+      console.log('Delete successful:', response);
+    })
+    .catch(error => {
+      console.error('Error deleting resource:', error);
+    });
     setRows(rows.filter((row) => row.id !== id));
   };
 
@@ -76,6 +82,12 @@ function UserList(props) {
     const updatedRow = { ...newRow, isNew: false };
     const updatedData = {role: newRow.role}
     axios.put(`/api/users/${newRow.id}`, updatedData)
+    .then(response => {
+      console.log('Change successful:', response);
+    })
+    .catch(error => {
+      console.error('Error deleting resource:', error);
+    });
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
   };
@@ -210,9 +222,6 @@ function UserList(props) {
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
         onProcessRowUpdateError={(error) => console.log(error)}
-        slots={{
-          toolbar: EditToolbar,
-        }}
         slotProps={{
           toolbar: { setRows, setRowModesModel },
         }}
