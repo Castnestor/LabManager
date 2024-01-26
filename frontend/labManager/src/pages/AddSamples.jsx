@@ -70,7 +70,7 @@ function AddSamples(props) {
     // console.log(currentSample);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
 
     // console.log(sampleArray);
     //Using map to create a new array of objects that are easy to read for the API
@@ -80,9 +80,15 @@ function AddSamples(props) {
       chain_of_custody: chain,
     }));
     // console.log(json);
-    //Send json created for the Api to handle
-    axios.post("/api/samples/create", json);
-    window.location.reload();
+
+    try {
+      //Send json created for the Api to handle
+      axios.post("/api/samples/create", json);
+      window.location.reload();
+    }
+    catch {
+      console.error("An error occurred during the post request:", error)
+    }
   };
 
   const handleClientData = (client) => {

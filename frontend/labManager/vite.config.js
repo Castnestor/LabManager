@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': 'http://localhost:4545/'
+      '/api': 'https://labmanagerbackend-production.up.railway.app'
     }
   }
 })

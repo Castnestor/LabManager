@@ -28,7 +28,6 @@ function SamplesList(props) {
   const clientList = fetchSamples("/api/clients");
   const navigate = useNavigate();
   const currentUser = useUserContext();
-  console.log(currentUser.currentUser);
   const sampleInfo = sampleList.map((sample, index) => ({
     id: sample.id,
     sampleNumber: sample.sampleNumber,

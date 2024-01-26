@@ -22,7 +22,6 @@ const SideBar = (props) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
 
-  console.log(currentUser);
 
   return (
     <Box
