@@ -83,7 +83,7 @@ function AddSamples(props) {
 
     try {
       //Send json created for the Api to handle
-      axios.post("/api/samples/create", json);
+      await axios.post("/api/samples/create", json);
       window.location.reload();
     }
     catch {

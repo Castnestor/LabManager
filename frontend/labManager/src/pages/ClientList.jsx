@@ -102,7 +102,7 @@ function ClientList(props) {
             rows={ClientList}
             columns={columns}
             initialState={{
-              ...ClientList.initialState,
+              ...ClientList?.initialState,
               pagination: { paginationModel: { pageSize: 20 } },
             }}
             pageSizeOptions={[20, 40, 60]}
