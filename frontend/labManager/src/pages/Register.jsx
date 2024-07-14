@@ -13,31 +13,58 @@ import { tokens } from "../themes/theme";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function Register() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    axios
-      .post("/api/users/register", Object.fromEntries(data.entries()))
-      .then((response) => {
-        let result = response.data.response;
-        let user = response.data.data;
-        navigate("/");
-        // console.log(user);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    let email = data.get("email");
+    let password1 = data.get("password");
+    let password2 = data.get("password2");
 
-    // console.log({
-    //   email: data.get("email"),
-    //   password: data.get("password"),
-    // });
+    if (!validateEmail(email)) {
+      setEmailError("Invalid email address");
+      return;
+    } else {
+      setEmailError("")
+    }
+
+    if (password1 ==  password2) {
+      console.log("yeah!!")
+      // axios
+      // .post("/api/users/register", Object.fromEntries(data.entries()))
+      // .then((response) => {
+      //   let result = response.data.response;
+      //       let user = response.data.data;
+      //       navigate("/");
+      //       // console.log(user);
+      //     })
+      //     .catch((err) => {
+      //         console.log(err);
+      //       });
+          
+      //     // console.log({
+      //     //     email: data.get("email"),
+      //     //     password: data.get("password"),
+      //     //   });
+    }
+    else {
+      setError("Password must match");
+      console. log("error, the dont match");
+    }
   };
 
   return (
@@ -101,6 +128,8 @@ export default function Register() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                error={!!emailError}
+                helperText={emailError}
               />
             </Grid>
             <Grid item xs={12}>
@@ -114,7 +143,23 @@ export default function Register() {
                 autoComplete="new-password"
               />
             </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="password2"
+                label="Confirm Password"
+                type="password"
+                id="password2"
+                autoComplete="new-password"
+              />
+            </Grid>
           </Grid>
+          {error && ( // Conditionally render the error message
+            <Typography color="error" variant="body2" sx={{ mt: 2 }}>
+              {error}
+            </Typography>
+          )}
           <Button
             type="submit"
             fullWidth
