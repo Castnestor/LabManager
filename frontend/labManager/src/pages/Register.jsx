@@ -44,22 +44,22 @@ export default function Register() {
 
     if (password1 ==  password2) {
       console.log("yeah!!")
-      // axios
-      // .post("/api/users/register", Object.fromEntries(data.entries()))
-      // .then((response) => {
-      //   let result = response.data.response;
-      //       let user = response.data.data;
-      //       navigate("/");
-      //       // console.log(user);
-      //     })
-      //     .catch((err) => {
-      //         console.log(err);
-      //       });
+      axios
+      .post("/api/users/register", Object.fromEntries(data.entries()))
+      .then((response) => {
+        let result = response.data.response;
+            let user = response.data.data;
+            navigate("/");
+            // console.log(user);
+          })
+          .catch((err) => {
+              console.log(err);
+            });
           
-      //     // console.log({
-      //     //     email: data.get("email"),
-      //     //     password: data.get("password"),
-      //     //   });
+          // console.log({
+          //     email: data.get("email"),
+          //     password: data.get("password"),
+          //   });
     }
     else {
       setError("Password must match");

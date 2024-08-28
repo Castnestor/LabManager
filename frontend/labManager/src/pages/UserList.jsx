@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { useUserContext } from "../context/UserContext";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import FormDialog from "../components/Confirmation";
 
 
 function formatDate(dateString) {
@@ -28,7 +29,10 @@ function UserList(props) {
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
+  // const [confirm, setConfirm] = useState("");
+  const [open, setOpen] = useState(false);
 
+  // need to add a try for this use effect
   useEffect(() => {
     axios("/api/users")
         .then(data =>setRows(data.data.data))
@@ -56,14 +60,18 @@ function UserList(props) {
 
   const handleDeleteClick = (id) => () => {
     console.log(id);
-    axios.delete(`/api/users/${id.id}`)
-    .then(response => {
-      console.log('Delete successful:', response);
-    })
-    .catch(error => {
-      console.error('Error deleting resource:', error);
-    });
-    setRows(rows.filter((row) => row.id !== id));
+
+    setOpen(true);
+    //  this is not the way to use this component
+
+    // axios.delete(`/api/users/${id}`)
+    // .then(response => {
+    //   console.log('Delete successful:', response);
+    // })
+    // .catch(error => {
+    //   console.error('Error deleting resource:', error);
+    // });
+    // setRows(rows.filter((row) => row.id !== id));
   };
 
   const handleCancelClick = (id) => () => {
